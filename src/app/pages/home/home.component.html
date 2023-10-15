@@ -1,0 +1,375 @@
+<mat-tab-group>
+  <mat-tab label="Home">
+    <div class="w-full mt-4 pl-4 pr-4">
+      <div class="w-full flex justify-center items-center relative">
+        <input
+          #filter
+          type="text"
+          id="default-search"
+          class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="Search events..."
+          required
+        />
+        <button
+          class="text-white absolute right-12 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          type="button"
+          (click)="filterResults(filter.value)"
+        >
+          Search
+        </button>
+      </div>
+      <div class="flex mt-4">
+        <div class="w-8/12 pr-4">
+          <h1 class="bg-red-300 p-2">TOP EVENTS</h1>
+          <div>
+            <div *ngFor="let item of filteredList">
+              <div class="flex m-4">
+                <div class="w-3/12">
+                  <img
+                    [src]="item.image"
+                    alt="event"
+                    class="w-full rounded-2xl"
+                  />
+                </div>
+                <div class="w-6/12 ml-4">
+                  <h1>{{ item.name }}</h1>
+                  <div class="flex">
+                    <h3 *ngFor="let hashtag of item.hashtags">
+                      #{{ hashtag }}&nbsp;
+                    </h3>
+                  </div>
+                  <p>{{ item.description }}</p>
+                </div>
+                <div class="w-3/12">
+                  <mat-form-field>
+                    <select matNativeControl required>
+                      <option value="to_calendar">To calendar</option>
+                      <option value="personally_join">Personally join</option>
+                      <option value="need_a_teammate">Need a teammate</option>
+                    </select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="border border-black"></div>
+        <div class="w-4/12 pl-4">
+          <h1 class="bg-red-300 p-2">PEOPLE YOU MAY KNOW</h1>
+          <div>
+            <div *ngFor="let item of peopleList">
+              <div class="flex m-4">
+                <div class="w-4/12">
+                  <img
+                    [src]="item.avatar"
+                    alt="event"
+                    class="w-full rounded-full"
+                  />
+                </div>
+                <div class="w-8/12 ml-4">
+                  <h2>{{ item.name }} - {{ item.school }}</h2>
+                  <p>{{ item.location }}</p>
+                  <div class="flex">
+                    <p *ngFor="let hashtag of item.hashtags">
+                      #{{ hashtag }}&nbsp;
+                    </p>
+                  </div>
+
+                <button type="button" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Add friend</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Recommendation">
+    <div class="w-full flex mt-4">
+      <div class="w-6/12 flex flex-col items-center">
+        <h1 class="text-rose-600">EXPLORE MORE FIELDS</h1>
+        <div>
+          <div *ngFor="let item of exploreList">
+            <div class="flex m-4">
+              <div class="w-3/12">
+                <img
+                  [src]="item.image"
+                  alt="event"
+                  class="w-full rounded-2xl"
+                />
+              </div>
+              <div class="w-9/12 ml-4">
+                <h1>{{ item.name }}</h1>
+                <div class="flex">
+                  <h3 *ngFor="let hashtag of item.hashtags">
+                    #{{ hashtag }}&nbsp;
+                  </h3>
+                </div>
+                <p>{{ item.description }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-6/12 flex flex-col items-center">
+        <h1 class="text-rose-600">PATH TO ACHIEVE MAIN GOAL</h1>
+        <div>
+          <div *ngFor="let item of achieveList">
+            <div class="flex m-4">
+              <div class="w-3/12">
+                <img
+                  [src]="item.image"
+                  alt="event"
+                  class="w-full rounded-2xl"
+                />
+              </div>
+              <div class="w-9/12 ml-4">
+                <h1>{{ item.name }}</h1>
+                <div class="flex">
+                  <h3 *ngFor="let hashtag of item.hashtags">
+                    #{{ hashtag }}&nbsp;
+                  </h3>
+                </div>
+                <p>{{ item.description }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Personal">
+    <div class="w-full flex mt-4">
+      <div class="w-3/12"></div>
+      <div class="w-6/12">
+        <div class="row text-center">
+          <div class="col-md-4">
+            <div class="btn-group">
+              <div
+                class="btn btn-primary"
+                mwlCalendarPreviousView
+                [view]="view"
+                [(viewDate)]="viewDate"
+                (viewDateChange)="closeOpenMonthViewDay()"
+              >
+                Previous
+              </div>
+              <div
+                class="btn btn-outline-secondary"
+                mwlCalendarToday
+                [(viewDate)]="viewDate"
+              >
+                Today
+              </div>
+              <div
+                class="btn btn-primary"
+                mwlCalendarNextView
+                [view]="view"
+                [(viewDate)]="viewDate"
+                (viewDateChange)="closeOpenMonthViewDay()"
+              >
+                Next
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <h3>{{ viewDate | calendarDate : view + "ViewTitle" : "en" }}</h3>
+          </div>
+          <div class="col-md-4">
+            <div class="btn-group">
+              <div
+                class="btn btn-primary"
+                (click)="setView(CalendarView.Month)"
+                [class.active]="view === CalendarView.Month"
+              >
+                Month
+              </div>
+              <div
+                class="btn btn-primary"
+                (click)="setView(CalendarView.Week)"
+                [class.active]="view === CalendarView.Week"
+              >
+                Week
+              </div>
+              <div
+                class="btn btn-primary"
+                (click)="setView(CalendarView.Day)"
+                [class.active]="view === CalendarView.Day"
+              >
+                Day
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div [ngSwitch]="view">
+          <mwl-calendar-month-view
+            *ngSwitchCase="CalendarView.Month"
+            [viewDate]="viewDate"
+            [events]="events"
+            [refresh]="refresh"
+            [activeDayIsOpen]="activeDayIsOpen"
+            (dayClicked)="dayClicked($event.day)"
+            (eventClicked)="handleEvent('Clicked', $event.event)"
+            (eventTimesChanged)="eventTimesChanged($event)"
+          >
+          </mwl-calendar-month-view>
+          <mwl-calendar-week-view
+            *ngSwitchCase="CalendarView.Week"
+            [viewDate]="viewDate"
+            [events]="events"
+            [refresh]="refresh"
+            (eventClicked)="handleEvent('Clicked', $event.event)"
+            (eventTimesChanged)="eventTimesChanged($event)"
+          >
+          </mwl-calendar-week-view>
+          <mwl-calendar-day-view
+            *ngSwitchCase="CalendarView.Day"
+            [viewDate]="viewDate"
+            [events]="events"
+            [refresh]="refresh"
+            (eventClicked)="handleEvent('Clicked', $event.event)"
+            (eventTimesChanged)="eventTimesChanged($event)"
+          >
+          </mwl-calendar-day-view>
+        </div>
+
+        <!-- Everything you see below is just for the demo, you don't need to include it in your app -->
+
+        <br /><br /><br />
+
+        <h3>
+          Edit events
+          <button class="btn btn-primary float-end" (click)="addEvent()">
+            Add new
+          </button>
+          <div class="clearfix"></div>
+        </h3>
+
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Primary color</th>
+                <th>Secondary + text color</th>
+                <th>Starts at</th>
+                <th>Ends at</th>
+                <th>Remove</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let event of events">
+                <td>
+                  <input
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="event.title"
+                    (keyup)="refresh.next()"
+                  />
+                </td>
+                <td>
+                  <input
+                    *ngIf="event.color"
+                    type="color"
+                    [(ngModel)]="event.color.primary"
+                    (change)="refresh.next()"
+                  />
+                </td>
+                <td>
+                  <input
+                    *ngIf="event.color"
+                    type="color"
+                    [(ngModel)]="event.color.secondary"
+                    (change)="refresh.next()"
+                  />
+                  <input
+                    *ngIf="event.color"
+                    type="color"
+                    [ngModel]="event.color?.secondaryText ?? '#1e90ff'"
+                    (ngModelChange)="event.color.secondaryText = $event"
+                    (change)="refresh.next()"
+                  />
+                </td>
+                <td>
+                  <input
+                    class="form-control"
+                    type="text"
+                    mwlFlatpickr
+                    [(ngModel)]="event.start"
+                    (ngModelChange)="refresh.next()"
+                    [altInput]="true"
+                    [convertModelValue]="true"
+                    [enableTime]="true"
+                    dateFormat="Y-m-dTH:i"
+                    altFormat="F j, Y H:i"
+                    placeholder="Not set"
+                  />
+                </td>
+                <td>
+                  <input
+                    class="form-control"
+                    type="text"
+                    mwlFlatpickr
+                    [(ngModel)]="event.end"
+                    (ngModelChange)="refresh.next()"
+                    [altInput]="true"
+                    [convertModelValue]="true"
+                    [enableTime]="true"
+                    dateFormat="Y-m-dTH:i"
+                    altFormat="F j, Y H:i"
+                    placeholder="Not set"
+                  />
+                </td>
+                <td>
+                  <button class="btn btn-danger" (click)="deleteEvent(event)">
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <ng-template #modalContent let-close="close">
+          <div class="modal-header">
+            <h5 class="modal-title">Event action occurred</h5>
+            <button type="button" class="close" (click)="close()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div>
+              Action:
+              <pre>{{ modalData?.action }}</pre>
+            </div>
+            <div>
+              Event:
+              <pre>{{ modalData?.event | json }}</pre>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              (click)="close()"
+            >
+              OK
+            </button>
+          </div>
+        </ng-template>
+      </div>
+      <div class="w-3/12">
+        <div id="chart">
+          <apx-chart
+            [series]="chartOptions.series"
+            [chart]="chartOptions.chart"
+            [labels]="chartOptions.labels"
+            [responsive]="chartOptions.responsive"
+          ></apx-chart>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>
